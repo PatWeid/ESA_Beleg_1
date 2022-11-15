@@ -49,7 +49,10 @@ abstract class SinglyLinkedIntList extends IntList {
     case Cons(_,_) => if (filterFunc(head)) Cons(head, tail.filter(filterFunc)) else tail.filter(filterFunc)
   }
 
-  override def forAll(predicateFunc: Int => Boolean): Boolean = ???
+  override def forAll(predicateFunc: Int => Boolean): Boolean = this match {
+    case Cons(_,Empty) => if (predicateFunc(head)) true else false
+    case Cons(_,_) => predicateFunc(head) && tail.forAll(predicateFunc)
+  }
 
   override def foldLeft(initial: Int)(reduceFunc: (Int, Int) => Int): Int = ???
 

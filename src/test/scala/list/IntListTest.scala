@@ -46,6 +46,10 @@ class IntListTest extends AnyFunSuite {
     assert(SinglyLinkedIntList(4, 5, 6).prepend(3) === SinglyLinkedIntList(3, 4, 5, 6))
   }
 
+  test("testPrependEmpty") {
+    assert(SinglyLinkedIntList().prepend(3) === SinglyLinkedIntList(3))
+  }
+
   test("testAppend") {
     assert(SinglyLinkedIntList(4, 5, 6).append(7) === SinglyLinkedIntList(4, 5, 6, 7))
   }
@@ -54,8 +58,20 @@ class IntListTest extends AnyFunSuite {
     assert(SinglyLinkedIntList(4, 5, 6).prefix(SinglyLinkedIntList(1, 2, 3)) === SinglyLinkedIntList(1, 2, 3, 4, 5, 6))
   }
 
+  test("testPrefixEmpty") {
+    assert(SinglyLinkedIntList().prefix(SinglyLinkedIntList(1, 2, 3)) === SinglyLinkedIntList(1, 2, 3))
+  }
+
   test("testDelete") {
     assert(SinglyLinkedIntList(4, 5, 6, 6, 7, 6).delete(6) === SinglyLinkedIntList(4, 5, 6, 7, 6))
+  }
+
+  test("testDelete1") {
+    assert(SinglyLinkedIntList(4, 5, 6, 6, 7, 6).delete(4) === SinglyLinkedIntList(5, 6, 6, 7, 6))
+  }
+
+  test("testDeleteEmpty") {
+    assert(SinglyLinkedIntList(4, 5, 6, 6, 7, 6).delete(9) === SinglyLinkedIntList(4, 5, 6, 6, 7, 6))
   }
 
   test("testDeleteAll") {
