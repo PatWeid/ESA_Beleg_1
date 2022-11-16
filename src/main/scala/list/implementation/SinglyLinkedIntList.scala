@@ -67,7 +67,10 @@ abstract class SinglyLinkedIntList extends IntList {
     case Cons(_,_) => reduceFunc(head, tail.foldRight(initial)(reduceFunc))
   }
 
-  override def reduceRight(reduceFunc: (Int, Int) => Int): Int = ???
+  override def reduceRight(reduceFunc: (Int, Int) => Int): Int = this match {
+    case Cons(_, Empty) => head
+    case Cons(head, tail) => reduceFunc(head, tail.reduceRight(reduceFunc))
+  }
 
   override def insertSorted(elem: Int): IntList = ???
 
