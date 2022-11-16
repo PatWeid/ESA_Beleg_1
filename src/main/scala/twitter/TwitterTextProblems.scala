@@ -26,7 +26,11 @@ object TwitterTextProblems {
      *
      * Hint: Use the flatMap function
    */
-  def getAllWords(l: List[(Any, String)]): List[String] = ???
+  def getAllWords(l: List[(Any, String)]): List[String] = {
+//    l.map(x => x.toString().toLowerCase)
+//    l.flatMap{case (x, y) => y.map(y => y.toString)}
+    l.flatMap{case (a,y) => getWords(y)}
+  }
 
   /*
      *  Gets a list of words and counts the occurrences of the individual words
