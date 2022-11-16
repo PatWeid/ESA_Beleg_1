@@ -54,7 +54,11 @@ abstract class SinglyLinkedIntList extends IntList {
     case Cons(_,_) => predicateFunc(head) && tail.forAll(predicateFunc)
   }
 
-  override def foldLeft(initial: Int)(reduceFunc: (Int, Int) => Int): Int = ???
+  // https://stackoverflow.com/questions/40827710/scala-fold-right-and-fold-left
+  override def foldLeft(initial: Int)(reduceFunc: (Int, Int) => Int): Int = this match {
+    case Cons(_,_) => tail.foldLeft(reduceFunc(initial, head))(reduceFunc)
+    case Empty => initial
+  }
 
   override def reduceLeft(reduceFunc: (Int, Int) => Int): Int = ???
 
