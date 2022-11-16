@@ -1,5 +1,6 @@
 package list
 
+import applyHOF.ProblemsLists
 import list.implementation.SinglyLinkedIntList
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -168,5 +169,17 @@ class IntListTest extends AnyFunSuite {
   }
     test("testInsertSorted3") {
     assert(SinglyLinkedIntList(1, 2, 3, 4,6).insertSorted(5) === SinglyLinkedIntList(1, 2, 3, 4, 5,6))
+  }
+
+  test("testDuplicateNum_1") {
+    assert(ProblemsLists.duplicateNum(4,3) === SinglyLinkedIntList(4,4,4))
+  }
+
+  test("testDuplicateNum_2") {
+    assert(ProblemsLists.duplicateNum(7, 11) === SinglyLinkedIntList(7,7,7,7,7,7,7,7,7,7,7))
+  }
+
+  test("duplicateEqualNumbers") {
+    assert(ProblemsLists.duplicateEqualNumbers(3,SinglyLinkedIntList(1,4,3,5,8)) === SinglyLinkedIntList(1, 4, 4, 4, 3, 5, 8, 8, 8))
   }
 }

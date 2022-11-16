@@ -13,11 +13,14 @@ object ProblemsLists {
     * E.x. duplicateNum(4,3)
     * -> SinglyLinkedList(4, 4, 4, 4)
     *
-    * @param i number to duplicate
+    * @param i     number to duplicate
     * @param times number of duplicates
     * @return List of duplicated numbers
     */
-  def duplicateNum(i:Int, times:Int):IntList= ???
+  def duplicateNum(i: Int, times: Int): IntList = times match {
+    case 0 => Empty
+    case _ => Cons(i, duplicateNum(i, times - 1))
+  }
 
   /**
     *
@@ -30,16 +33,42 @@ object ProblemsLists {
     * -> SinglyLinkedList(1, 4, 4, 4, 3, 5, 8, 8, 8)
     *
     * @param times number of duplicates
-    * @param l IntList that should be processed
+    * @param l     IntList that should be processed
     * @return IntList that contains the duplicates and all other nums
     */
-  def duplicateEqualNumbers(times:Int, l:IntList): IntList= ???
+  def duplicateEqualNumbers(times: Int, l: IntList): IntList = {
+    //    case Empty => Empty
+    //    case _ if l.head % 2 == 0 => Cons(l. head, this.duplicateNum(l.head, times)).append(duplicateEqualNumbers(times, l.tail))
+    //    case _ => Cons(l.head, duplicateEqualNumbers(times, l.tail))
+
+    def iterate(dupList: IntList, index: Int): IntList = {
+      def duplicate(list: IntList, times: Int): IntList = {
+        if (times == 0) {
+          list
+        } else {
+          duplicate(list.append(l.get(index)), times - 1)
+        }
+      }
+
+      if (index < l.size) {
+        l.get(index) match {
+          case odd if (odd % 2 != 0) => iterate(dupList.append(odd), index + 1)
+          case even if (even % 2 == 0) => iterate(duplicate(dupList, times), index + 1)
+        }
+      } else {
+        dupList
+      }
+    }
+
+    iterate(SinglyLinkedIntList(), 0)
+  }
 
   /*
 
   Harder Problems - Optional
 
    */
+
   /**
     *
     * Given a amount of money and a list of coin values,
