@@ -60,7 +60,10 @@ abstract class SinglyLinkedIntList extends IntList {
     case Empty => initial
   }
 
-  override def reduceLeft(reduceFunc: (Int, Int) => Int): Int = ???
+  override def reduceLeft(reduceFunc: (Int, Int) => Int): Int = this match {
+    case Cons(head, Cons(_, Empty)) => reduceFunc(head, tail.head)
+    case Cons(head, tail) => Cons(reduceFunc(head, tail.head), tail.tail).reduceLeft(reduceFunc)
+  }
 
   override def foldRight(initial: Int)(reduceFunc: (Int, Int) => Int): Int = this match {
     case Empty => initial
