@@ -35,7 +35,11 @@ object TwitterTextProblems {
   /*
      *  Gets a list of words and counts the occurrences of the individual words
   */
-  def countWords(l: List[String]): List[(String, Int)] = ???
+  def countWords(l: List[String]): List[(String, Int)] = {
+    l.groupBy(identity).map { case (k,v) => (k, v.size)} to List
+
+//  List(("abc", 5))
+  }
 
   /*
     * Gets a list of the most 10 Used Words in a list of Tweets
