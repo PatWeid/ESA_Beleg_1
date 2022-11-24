@@ -132,13 +132,23 @@ object TwitterTextProblems {
    * of the word occurs
    * Use the inverse index for calculating the or-Operation.
   */
-  def orConjunction(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = ???
+  def orConjunction(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = {
+//    println(words.flatMap(word => invInd.get(word)).flatten to Set)
+    words.flatMap(word => invInd.get(word)).flatten to Set
+  }
 
   /*
   * The Functions gets a list of words and returns a set of tweet ids where all of the words occur
  * Use the inverse index for calculating the and-Operation.
    */
-  def andConjunction(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = ???
+  def andConjunction(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = {
+    println(invInd)
+    println(words)
+
+    println(words.map(word => invInd.get(word)))
+
+    Set(1L)
+  }
 
   /**************************************************************************
     *    Helper Functions
