@@ -15,6 +15,7 @@ class ProblemsListsTest extends AnyFunSuite{
   }
 
   test("testCountChange") {
+    // not implemented yet due to optional task...
     assert(ProblemsLists.countChange(4, SinglyLinkedIntList(1, 2)) === 3)
   }
 }

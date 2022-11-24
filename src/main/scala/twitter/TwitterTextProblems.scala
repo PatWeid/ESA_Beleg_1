@@ -2,7 +2,6 @@ package twitter
 
 import twitter.models.Tweet
 
-import scala.collection.immutable
 import scala.collection.immutable.HashSet
 
 object TwitterTextProblems {
@@ -114,7 +113,24 @@ object TwitterTextProblems {
   *
   * Filter also all words that are used less the 5 times
    */
-  def getLeast10UsedWordsCleaned(l:List[Tweet], stopW:HashSet[String]):List[(String,Int)]= ???
+  def getLeast10UsedWordsCleaned(l:List[Tweet], stopW:HashSet[String]):List[(String,Int)]= {
+
+    prepareData(l, stopW).flatMap(_._2).groupBy(identity).map({ case (k -> v) => (k, v.size) }).toList.filter(_._2 >= 5)
+      .sorted((x: (String, Int), y: (String, Int)) => {
+        if (y._2 < x._2) 1
+        else if (y._2 > x._2) -1
+        else x._1.compareTo(y._1)
+      }).take(10)
+
+//    println(prepareData(l, stopW).flatMap(_._2).groupBy(identity).map({ case (k -> v) => (k, v.size) }).toList.filter(_._2 >= 5)
+//      .sorted((x: (String, Int), y: (String, Int)) => {
+//      if (y._2 < x._2) 1
+//      else if (y._2 > x._2) -1
+//      else x._1.compareTo(y._1)
+//    }).take(10))
+//
+//    l.take(100).map(t => (t.partei, t.tweet_id.toInt)) to List
+  }
 
   def concatenate(x: HashSet[Any]):  Set[(Long, String)]= {
     println("concatenate")
