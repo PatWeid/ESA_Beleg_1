@@ -145,9 +145,20 @@ object TwitterTextProblems {
     println(invInd)
     println(words)
 
-    println(words.map(word => invInd.get(word)))
+    // return empty Set if one of the words doesn't appear in any tweet
+    if(words.map(word => invInd.get(word)).contains(None)) return Set()
+    else {
+      // 1. eine Liste mit den IDs aller Tweets erstellen, in denen die gesuchten Wörter vorkommen.
+      // 2. diese IDs mit groupBy zusammen fassen und den count der IDs ermitteln: Map [tweet_id -> so viele der gesuchten Wörter kommen in diesem Tweet vor]
+      // 3. nach den IDs filtern, in denen alle gesuchten Wörter vor kommen -> diese werden retourniert
+      // println(words.flatMap(word => invInd.get(word)).flatten.groupBy(identity).map({case(long, list) => (long, list.size)}).filter({case (long, int) => int >= words.size}))
+//      println(words.flatMap(word => invInd.get(word)).flatten.groupBy(identity).map({case(long, list) => (long, list.size)}).filter({case (long, int) => int >= words.size}).map({case (long, int) => long}) to Set)
 
-    Set(1L)
+      //                                                                                                                                        TODO == oder >=?
+      words.flatMap(word => invInd.get(word)).flatten.groupBy(identity).map({case(long, list) => (long, list.size)}).filter({case (long, int) => int >= words.size}).map({case (long, int) => long}) to Set
+    }
+
+//    Set(1L)
   }
 
   /**************************************************************************
