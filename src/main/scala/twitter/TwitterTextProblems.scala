@@ -51,6 +51,9 @@ object TwitterTextProblems {
 //    println(l.map(Tweet => Tweet.text).foreach(str => str.split("\\n").map(_.trim).toList))
 //    println(countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).sortBy({ case (x,y) => -y}).groupBy({case (x,y) => y}))
 //    println(countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).groupBy({case (x,y) => y}))
+
+
+    // source: https://stackoverflow.com/questions/59247874/scala-how-to-sort-tuples-by-both-attributes-in-different-order
     countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).sorted((x: (String, Int), y: (String, Int)) => {
       if (y._2 > x._2) 1
       else if (y._2 < x._2) -1
@@ -66,7 +69,12 @@ object TwitterTextProblems {
     * Function should return a list of tuples (tweet ID, Set of Words that are within the text
     *
   */
-  def prepareData(l:List[Tweet], stopW:HashSet[String]):List[(Long,Set[String])]= ???
+  def prepareData(l:List[Tweet], stopW:HashSet[String]):List[(Long,Set[String])]= {
+//    println(l.map(Tweet => Tweet.text).flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)).sorted)
+
+//    println(l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))}))
+    l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))})
+  }
 
   /*
    * Gets a list of the most 10 Used Words in a list of Tweets

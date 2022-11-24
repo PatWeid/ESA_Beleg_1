@@ -80,7 +80,9 @@ class TwitterTextProblemsTest extends AnyFunSuite {
       val expected= List("also", "another", "are", "contains", "lot", "result",
         "should", "string", "test", "test", "this", "this", "which", "words", "words")
       val data=TwitterTextProblems.prepareData(tweets, stopW)
+      println("data: " + data)
       val result=data.flatMap(t=>t._2).sorted
+      println("result: " + result)
       assert(result.sorted===expected)
     }
   }
