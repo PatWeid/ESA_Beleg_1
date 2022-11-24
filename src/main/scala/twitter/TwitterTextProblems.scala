@@ -100,11 +100,23 @@ object TwitterTextProblems {
    */
   def getLeast10UsedWordsCleaned(l:List[Tweet], stopW:HashSet[String]):List[(String,Int)]= ???
 
+  def concatenate(x: HashSet[Any]):  Set[(Long, String)]= {
+    println("concatenate")
+    println(x)
+
+    Set((1,"abc"))
+  }
+
   /*
-  * Gets all words of a list of Tweets combined with the tweet_ids where they are occuring
-  * The function should return a set of tuples where the first element is the id and the second a that is in the tweet
-   */
-  def getAllWordsWithIndex(l: List[Tweet]): Set[(Long, String)] = ???
+    * Gets all words of a list of Tweets combined with the tweet_ids where they are occuring
+    * The function should return a set of tuples where the first element is the id and the second a that is in the tweet
+     */
+  def getAllWordsWithIndex(l: List[Tweet]): Set[(Long, String)] = {
+//    println(l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)))}))
+//    println(l.map(Tweet => HashSet(Tweet.tweet_id, getWords(Tweet.text))).map({case x => concatenate(x)}))
+//    println(l.map(Tweet => Tuple2(Tweet.tweet_id , getWords(Tweet.text))).flatMap({case (x,y) => y.map(s => Tuple2(x, s))}) to Set)
+    l.map(Tweet => Tuple2(Tweet.tweet_id , getWords(Tweet.text))).flatMap({case (tweet_id,wordList) => wordList.map(word => Tuple2(tweet_id, word))}) to Set
+  }
 
   /*
   * Function should create an Inverse Index
