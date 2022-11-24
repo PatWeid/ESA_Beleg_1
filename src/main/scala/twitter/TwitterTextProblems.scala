@@ -122,7 +122,10 @@ object TwitterTextProblems {
   * Function should create an Inverse Index
   * It should return a Map the words as the key element and a set of tweet ids where the word is contained.
    */
-  def createInverseIndex(l: Set[(Long, String)]): Map[String, Set[Long]] = ???
+  def createInverseIndex(l: Set[(Long, String)]): Map[String, Set[Long]] = {
+//    println(l.groupBy({case(x,y) => y}).map({case (k, v) => (k, v.map({case (k, v) => k}))}))
+    l.groupBy({case(x,y) => y}).map({case (k, v) => (k, v.map({case (k, v) => k}))})
+  }
 
   /*
    * The Functions gets a list of words and returns a set of tweet ids where at least one
