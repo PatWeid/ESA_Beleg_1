@@ -87,7 +87,23 @@ object TwitterTextProblems {
    * - number of occurences (first criteria descending)
    * - alphabetically (second criteria ascending)
   */
-  def getMost10UsedWordsCleaned(l:List[Tweet], stopW:HashSet[String]):List[(String,Int)]= ???
+  def getMost10UsedWordsCleaned(l:List[Tweet], stopW:HashSet[String]):List[(String,Int)]= {
+
+//    println(prepareData(l.take(100), stopW).flatMap({case(id, text) => text}))
+//    println(prepareData(l.take(100), stopW).flatMap(_._2).groupBy(identity).map({case (k -> v) => (k, v.size)}).toList.sorted((x: (String, Int), y: (String, Int)) => {
+//      if (y._2 > x._2) 1
+//      else if (y._2 < x._2) -1
+//      else x._1.compareTo(y._1)
+//    }))
+//    l.take(100).map(t => (t.partei, t.tweet_id.toInt)) to List
+
+    prepareData(l, stopW).flatMap(_._2).groupBy(identity).map({ case (k -> v) => (k, v.size) }).toList.sorted((x: (String, Int), y: (String, Int)) => {
+      if (y._2 > x._2) 1
+      else if (y._2 < x._2) -1
+      else x._1.compareTo(y._1)
+    }).take(10)
+
+  }
 
   /*
   * Gets a list of the 10 least used words in a list of Tweets
