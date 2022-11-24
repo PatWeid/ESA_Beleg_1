@@ -47,7 +47,16 @@ object TwitterTextProblems {
     * - number of occurences (first criteria descending)
     * - alphabetically (second criteria ascending)
    */
-  def getMost10UsedWords(l:List[Tweet]):List[(String,Int)]= ???
+  def getMost10UsedWords(l:List[Tweet]):List[(String,Int)]= {
+//    println(l.map(Tweet => Tweet.text).foreach(str => str.split("\\n").map(_.trim).toList))
+//    println(countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).sortBy({ case (x,y) => -y}).groupBy({case (x,y) => y}))
+//    println(countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).groupBy({case (x,y) => y}))
+    countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).sorted((x: (String, Int), y: (String, Int)) => {
+      if (y._2 > x._2) 1
+      else if (y._2 < x._2) -1
+      else x._1.compareTo(y._1)
+    }).take(10)
+  }
 
   /*
     * The data set should be processed by

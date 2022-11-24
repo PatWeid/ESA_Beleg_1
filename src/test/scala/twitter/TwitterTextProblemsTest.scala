@@ -56,6 +56,7 @@ class TwitterTextProblemsTest extends AnyFunSuite {
     new teststrings{
 
       val result= TwitterTextProblems.countWords(TwitterTextProblems.getAllWords(test_list))
+      println(result)
       assert (result.length===19)
       assert (result.sorted===wordOccurences)
     }
@@ -66,6 +67,7 @@ class TwitterTextProblemsTest extends AnyFunSuite {
     new teststrings{
 
       val result= TwitterTextProblems.getMost10UsedWords(tweets)
+//      println(result)
       assert (result.length===10)
       assert (result===List(("is",2), ("test",2), ("the",2), ("this",2), ("words",2), ("a",1), ("also",1),
         ("another",1), ("are",1), ("be",1)))
