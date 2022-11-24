@@ -73,7 +73,11 @@ object TwitterTextProblems {
 //    println(l.map(Tweet => Tweet.text).flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)).sorted)
 
 //    println(l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))}))
-    l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))})
+
+
+//    l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))})
+    // with diff:
+    l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).diff(stopW))})
   }
 
   /*
