@@ -26,8 +26,6 @@ object TwitterTextProblems {
      * Hint: Use the flatMap function
    */
   def getAllWords(l: List[(Any, String)]): List[String] = {
-//    l.map(x => x.toString().toLowerCase)
-//    l.flatMap{case (x, y) => y.map(y => y.toString)}
     l.flatMap{case (a,y) => getWords(y)}
   }
 
@@ -36,8 +34,6 @@ object TwitterTextProblems {
   */
   def countWords(l: List[String]): List[(String, Int)] = {
     l.groupBy(identity).map { case (k,v) => (k, v.size)} to List
-
-//  List(("abc", 5))
   }
 
   /*
@@ -47,12 +43,7 @@ object TwitterTextProblems {
     * - alphabetically (second criteria ascending)
    */
   def getMost10UsedWords(l:List[Tweet]):List[(String,Int)]= {
-//    println(l.map(Tweet => Tweet.text).foreach(str => str.split("\\n").map(_.trim).toList))
-//    println(countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).sortBy({ case (x,y) => -y}).groupBy({case (x,y) => y}))
-//    println(countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).groupBy({case (x,y) => y}))
-
-
-    // source: https://stackoverflow.com/questions/59247874/scala-how-to-sort-tuples-by-both-attributes-in-different-order
+    // https://stackoverflow.com/questions/59247874/scala-how-to-sort-tuples-by-both-attributes-in-different-order
     countWords(l.map(Tweet => Tweet.text).flatMap(s => getWords(s))).sorted((x: (String, Int), y: (String, Int)) => {
       if (y._2 > x._2) 1
       else if (y._2 < x._2) -1
@@ -69,12 +60,10 @@ object TwitterTextProblems {
     *
   */
   def prepareData(l:List[Tweet], stopW:HashSet[String]):List[(Long,Set[String])]= {
-//    println(l.map(Tweet => Tweet.text).flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)).sorted)
 
-//    println(l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))}))
-
-
+//    l.map(tweet => (tweet.tweet_id, getWords(tweet.text))).map({case(id, wordList) => (id, wordList.filter(word => !stopW.contains(word) && word.size >= 3) to Set)})
 //    l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).filter(s => !stopW.contains(s)))})
+
     // with diff:
     l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)).filter(s => s.length >= 3).diff(stopW))})
   }
@@ -87,21 +76,11 @@ object TwitterTextProblems {
    * - alphabetically (second criteria ascending)
   */
   def getMost10UsedWordsCleaned(l:List[Tweet], stopW:HashSet[String]):List[(String,Int)]= {
-
-//    println(prepareData(l.take(100), stopW).flatMap({case(id, text) => text}))
-//    println(prepareData(l.take(100), stopW).flatMap(_._2).groupBy(identity).map({case (k -> v) => (k, v.size)}).toList.sorted((x: (String, Int), y: (String, Int)) => {
-//      if (y._2 > x._2) 1
-//      else if (y._2 < x._2) -1
-//      else x._1.compareTo(y._1)
-//    }))
-//    l.take(100).map(t => (t.partei, t.tweet_id.toInt)) to List
-
     prepareData(l, stopW).flatMap(_._2).groupBy(identity).map({ case (k -> v) => (k, v.size) }).toList.sorted((x: (String, Int), y: (String, Int)) => {
       if (y._2 > x._2) 1
       else if (y._2 < x._2) -1
       else x._1.compareTo(y._1)
     }).take(10)
-
   }
 
   /*
@@ -132,13 +111,6 @@ object TwitterTextProblems {
 //    l.take(100).map(t => (t.partei, t.tweet_id.toInt)) to List
   }
 
-  def concatenate(x: HashSet[Any]):  Set[(Long, String)]= {
-    println("concatenate")
-    println(x)
-
-    Set((1,"abc"))
-  }
-
   /*
     * Gets all words of a list of Tweets combined with the tweet_ids where they are occuring
     * The function should return a set of tuples where the first element is the id and the second a that is in the tweet
@@ -147,6 +119,7 @@ object TwitterTextProblems {
 //    println(l.map(Tweet => Tuple2(Tweet.tweet_id, Set(Tweet.text))).map({case (l, s) => Tuple2(l, s.flatMap(s => getWords(s)))}))
 //    println(l.map(Tweet => HashSet(Tweet.tweet_id, getWords(Tweet.text))).map({case x => concatenate(x)}))
 //    println(l.map(Tweet => Tuple2(Tweet.tweet_id , getWords(Tweet.text))).flatMap({case (x,y) => y.map(s => Tuple2(x, s))}) to Set)
+
     l.map(Tweet => Tuple2(Tweet.tweet_id , getWords(Tweet.text))).flatMap({case (tweet_id,wordList) => wordList.map(word => Tuple2(tweet_id, word))}) to Set
   }
 
@@ -155,7 +128,8 @@ object TwitterTextProblems {
   * It should return a Map the words as the key element and a set of tweet ids where the word is contained.
    */
   def createInverseIndex(l: Set[(Long, String)]): Map[String, Set[Long]] = {
-//    println(l.groupBy({case(x,y) => y}).map({case (k, v) => (k, v.map({case (k, v) => k}))}))
+//    l.groupBy(_._2).map({case (word, set) => (word, set.map({case(l, s) => (l)}))})
+
     l.groupBy({case(x,y) => y}).map({case (k, v) => (k, v.map({case (k, v) => k}))})
   }
 
@@ -165,7 +139,6 @@ object TwitterTextProblems {
    * Use the inverse index for calculating the or-Operation.
   */
   def orConjunction(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = {
-//    println(words.flatMap(word => invInd.get(word)).flatten to Set)
     words.flatMap(word => invInd.get(word)).flatten to Set
   }
 
@@ -174,23 +147,26 @@ object TwitterTextProblems {
  * Use the inverse index for calculating the and-Operation.
    */
   def andConjunction(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = {
-    println(invInd)
-    println(words)
+    words.map(word => (word, invInd.get(word))).map(x => x._2.getOrElse(Set())).reduce((a, b) => a intersect b)
+  }
 
+  def andConjunctionComplicated(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = {
     // return empty Set if one of the words doesn't appear in any tweet
     if(words.map(word => invInd.get(word)).contains(None)) return Set()
     else {
       // 1. eine Liste mit den IDs aller Tweets erstellen, in denen die gesuchten Wörter vorkommen.
       // 2. diese IDs mit groupBy zusammen fassen und den count der IDs ermitteln: Map [tweet_id -> so viele der gesuchten Wörter kommen in diesem Tweet vor]
-      // 3. nach den IDs filtern, in denen alle gesuchten Wörter vor kommen -> diese werden retourniert
-      // println(words.flatMap(word => invInd.get(word)).flatten.groupBy(identity).map({case(long, list) => (long, list.size)}).filter({case (long, int) => int >= words.size}))
-//      println(words.flatMap(word => invInd.get(word)).flatten.groupBy(identity).map({case(long, list) => (long, list.size)}).filter({case (long, int) => int >= words.size}).map({case (long, int) => long}) to Set)
-
-      //                                                                                                                                        TODO == oder >=?
+      // 3. nach den IDs filtern, in denen alle gesuchten Wörter vor kommen -> diese werden retourniert                                                                                                                                       TODO == oder >=?
       words.flatMap(word => invInd.get(word)).flatten.groupBy(identity).map({case(long, list) => (long, list.size)}).filter({case (long, int) => int >= words.size}).map({case (long, int) => long}) to Set
     }
+  }
 
-//    Set(1L)
+  def andConjunctionOli(words: List[String], invInd: Map[String, Set[Long]]): Set[Long] = {
+    if (words.forall(x => invInd.contains(x))) {
+      words.flatMap(word => invInd.get(word)).reduceLeft(_.intersect(_))
+    } else {
+      Set()
+    }
   }
 
   /**************************************************************************

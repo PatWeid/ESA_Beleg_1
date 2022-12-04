@@ -26,25 +26,21 @@ object SinglyLinkedIntList {
 abstract class SinglyLinkedIntList extends IntList {
 
   override def prefix(other: IntList): IntList = other match{
-    
     case Empty => this
     case Cons(h,t) => Cons(h,prefix(t)) 
   }
   override def size: Int = this match{
-    
     case Empty => 0
     case _ => 1+tail.size
   }
 
   override def map(mapFunc: Int => Int): IntList = this match{
-    
     case Empty => Empty
     case Cons(_,_) => Cons(mapFunc(head), tail.map(mapFunc))
         
   }
 
   override def filter(filterFunc: Int => Boolean): IntList =  this match{
-    
     case Empty => Empty
     case Cons(_,_) => if (filterFunc(head)) Cons(head, tail.filter(filterFunc)) else tail.filter(filterFunc)
   }

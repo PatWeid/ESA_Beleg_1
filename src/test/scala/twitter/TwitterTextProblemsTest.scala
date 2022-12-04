@@ -5,6 +5,7 @@ import twitter.models.Tweet
 
 import scala.collection.immutable.HashSet
 
+// Gruppenpartner: Oliver Thomaschewski
 class TwitterTextProblemsTest extends AnyFunSuite {
 
   trait teststrings {

@@ -4,6 +4,7 @@ import applyHOF.ProblemsLists
 import list.implementation.SinglyLinkedIntList
 import org.scalatest.funsuite.AnyFunSuite
 
+// Gruppenpartner: Oliver Thomaschewski
 class IntListTest extends AnyFunSuite {
 
 
@@ -164,7 +165,7 @@ class IntListTest extends AnyFunSuite {
     assert(SinglyLinkedIntList(1, 2, 3, 4).insertSorted(5) === SinglyLinkedIntList(1, 2, 3, 4, 5))
   }
 
-   test("testInsertSorted2") {
+  test("testInsertSorted2") {
     assert(SinglyLinkedIntList(1, 2, 3, 8).insertSorted(5) === SinglyLinkedIntList(1, 2, 3, 5, 8))
   }
     test("testInsertSorted3") {
@@ -177,6 +178,26 @@ class IntListTest extends AnyFunSuite {
 
   test("testDuplicateNum_2") {
     assert(ProblemsLists.duplicateNum(7, 11) === SinglyLinkedIntList(7,7,7,7,7,7,7,7,7,7,7))
+  }
+
+  test("testDuplicateNum_3") {
+    assert(ProblemsLists.duplicateNum(7, 0) === SinglyLinkedIntList())
+  }
+
+  test("testDuplicateNum_11") {
+    assert(ProblemsLists.duplicateNum1(4, 3) === SinglyLinkedIntList(4, 4, 4))
+  }
+
+  test("testDuplicateNum_12") {
+    assert(ProblemsLists.duplicateNum1(7, 11) === SinglyLinkedIntList(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7))
+  }
+
+  test("testDuplicateNum_21") {
+    assert(ProblemsLists.duplicateNum2(4, 3) === SinglyLinkedIntList(4, 4, 4))
+  }
+
+  test("testDuplicateNum_22") {
+    assert(ProblemsLists.duplicateNum2(7, 11) === SinglyLinkedIntList(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7))
   }
 
   test("duplicateEqualNumbers") {

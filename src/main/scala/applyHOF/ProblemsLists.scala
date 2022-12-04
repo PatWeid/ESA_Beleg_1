@@ -22,6 +22,21 @@ object ProblemsLists {
     case _ => Cons(i, duplicateNum(i, times - 1))
   }
 
+  // fails on duplicateNum1(5, 0)
+  def duplicateNum1(i: Int, times: Int): IntList = {
+        times match {
+          case 1 => Cons(i, Empty)
+          case _ => Cons(i, duplicateNum(i, times - 1))
+        }
+  }
+  // fails on duplicateNum1(5, 0)
+  def duplicateNum2(i: Int, times: Int): IntList =  {
+    times match {
+      case _ if (times > 1) => Cons(i, duplicateNum(i, times - 1))
+      case _ => Cons(i, Empty)
+    }
+  }
+
   /**
     *
     * Given an IntList l that contains even and odd numbers
@@ -36,31 +51,33 @@ object ProblemsLists {
     * @param l     IntList that should be processed
     * @return IntList that contains the duplicates and all other nums
     */
-  def duplicateEqualNumbers(times: Int, l: IntList): IntList = {
-    //    case Empty => Empty
-    //    case _ if l.head % 2 == 0 => Cons(l. head, this.duplicateNum(l.head, times)).append(duplicateEqualNumbers(times, l.tail))
-    //    case _ => Cons(l.head, duplicateEqualNumbers(times, l.tail))
+  def duplicateEqualNumbers(times: Int, l: IntList): IntList = l match {
+    case Empty => Empty
+    case _ if (l.head % 2 == 0) => duplicateEqualNumbers(times, l.tail).prefix(duplicateNum(l.head, times));
+    case _ => Cons(l.head, duplicateEqualNumbers(times, l.tail))
+  }
 
-    def iterate(dupList: IntList, index: Int): IntList = {
-      def duplicate(list: IntList, times: Int): IntList = {
-        if (times == 0) {
-          list
-        } else {
-          duplicate(list.append(l.get(index)), times - 1)
+  def duplicateEqualNumbersComplicated(times: Int, l: IntList): IntList = {
+        def iterate(dupList: IntList, index: Int): IntList = {
+          def duplicate(list: IntList, times: Int): IntList = {
+            if (times == 0) {
+              list
+            } else {
+              duplicate(list.append(l.get(index)), times - 1)
+            }
+          }
+
+          if (index < l.size) {
+            l.get(index) match {
+              case odd if (odd % 2 != 0) => iterate(dupList.append(odd), index + 1)
+              case even if (even % 2 == 0) => iterate(duplicate(dupList, times), index + 1)
+            }
+          } else {
+            dupList
+          }
         }
-      }
 
-      if (index < l.size) {
-        l.get(index) match {
-          case odd if (odd % 2 != 0) => iterate(dupList.append(odd), index + 1)
-          case even if (even % 2 == 0) => iterate(duplicate(dupList, times), index + 1)
-        }
-      } else {
-        dupList
-      }
-    }
-
-    iterate(SinglyLinkedIntList(), 0)
+        iterate(SinglyLinkedIntList(), 0)
   }
 
   /*
